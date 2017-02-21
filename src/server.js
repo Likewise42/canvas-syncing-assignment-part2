@@ -22,7 +22,7 @@ const io = socketio(app);
 
 const squares = {};
 
-const makeSquare = (xVal, yVal, time, socket) => {
+const makeSquare = (xVal, yVal, time) => {
   console.log(`Making new Square at ${xVal},${yVal}`);
 
   squares[time] = {};
@@ -35,7 +35,7 @@ const listeners = (sock) => {
   const socket = sock;
 
   socket.on('newSquare', (data) => {
-    makeSquare(data.x, data.y, data.time, socket);
+    makeSquare(data.x, data.y, data.time);
   });
 };
 
@@ -43,8 +43,9 @@ io.sockets.on('connection', (socket) => {
   console.log('someone joined');
 
   listeners(socket);
-  setInterval(()=>{
-    socket.emit('giveSquares', { squares })}, 100);
+  setInterval(() => {
+    socket.emit('giveSquares', { squares });
+  }, 100);
 });
 
 console.log('Websocket server started');
