@@ -20,7 +20,7 @@ console.log(`Listening on 127.0.0.1: ${port}`);
 // pass int he http server to socketio and grab the websocker server as io
 const io = socketio(app);
 
-const squares = {};
+let squares = {};
 
 const makeSquare = (xVal, yVal, time) => {
   console.log(`Making new Square at ${xVal},${yVal}`);
@@ -46,6 +46,10 @@ io.sockets.on('connection', (socket) => {
   setInterval(() => {
     socket.emit('giveSquares', { squares });
   }, 100);
+
+  setInterval(() => {
+    squares = {};
+  }, 30000);
 });
 
 console.log('Websocket server started');
