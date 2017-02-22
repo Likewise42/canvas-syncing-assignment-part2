@@ -22,23 +22,24 @@
     		
     		socket.on('connect', ()=>{
     			console.log('connected to the server');
-    		});
-          
-            socket.on('giveSquares',(data)=>{
-                draw = data.squares;
               
-                drawSquares();
-            });
-            
-            canvas = document.querySelector("#canvas");
-            ctx = canvas.getContext("2d");
-          
-            ctx.fillStyle = 'black';
-            
-            canvas.onclick = (e) => {
-                newSquare(e.x, e.y);
-            };
-    			
+                socket.on('giveSquares',(data)=>{
+                    draw = data.squares;
+                  
+                    drawSquares();
+                });
+                
+                canvas = document.querySelector("#canvas");
+                ctx = canvas.getContext("2d");
+              
+                ctx.fillStyle = 'black';
+                
+                canvas.onclick = (e) => {
+                    newSquare(e.x, e.y);
+                };
+                
+                socket.emit('join', {});
+    		});
     	};
 
         const newSquare = (xVal,yVal) => {
@@ -56,7 +57,6 @@
             for(let i=0; i<keys.length; i++){
                 const drawCall = draw[keys[i]];
                 
-                console.dir(draw);
                 ctx.fillRect(drawCall.x-(sideLength/2),drawCall.y-(sideLength/2),sideLength,sideLength);
             }
         };

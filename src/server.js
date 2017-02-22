@@ -37,19 +37,24 @@ const listeners = (sock) => {
   socket.on('newSquare', (data) => {
     makeSquare(data.x, data.y, data.time);
   });
+  
+  socket.on('join', ()=>{
+    socket.join('room1');
+  });
 };
 
 io.sockets.on('connection', (socket) => {
   console.log('someone joined');
 
   listeners(socket);
-  setInterval(() => {
-    socket.emit('giveSquares', { squares });
-  }, 100);
-
-  setInterval(() => {
-    squares = {};
-  }, 30000);
 });
+
+setInterval(() => {
+  io.sockets.in('room1').emit('giveSquares', { squares });
+}, 100);
+
+setInterval(() => {
+  squares = {};
+}, 30000);
 
 console.log('Websocket server started');
